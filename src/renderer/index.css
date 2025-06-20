@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.light {
+  --primary: #455d6d;
+  --text: #1c2124;
+  --header-text: #efefef;
+  --navbar: #efefef;
+  --secondary: rgb(206, 16, 16);
+  --accent: #c3c2c2fc;
+  --background: #efefef;
+  --highlight: #f36550;
+}
+
+.dark {
+  --primary: #283036;
+  --text: #bfbfbf;
+  --header-text: #bfbfbf;
+  --navbar: #bfbfbf;
+  --secondary: rgb(206, 16, 16);
+  --accent: #494d4f;
+  --background: #1c2124;
+  --highlight: #f36550;
+}
+
+html {
+  @apply bg-background text-text;
+}
+
+@layer base {
+  @font-face {
+    font-family: 'Ubuntu';
+    src: url('../../resources/assets/fonts/Ubuntu-Medium.ttf');
+  }
+  @font-face {
+    font-family: 'UbuntuBold';
+    src: url('../../resources/assets/fonts/Ubuntu-Bold.ttf');
+  }
+  @font-face {
+    font-family: 'Arial';
+    src: url('../../resources/assets/fonts/ARIAL.TTF');
+  }
+}
+
+.text-sm {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+}
+
+.text-base {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+}
+
+.text-lg {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75rem; /* 28px */
+}
+
+.text-xl {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+}
+
+.text-2xl {
+  font-size: 1.5rem; /* 24px */
+  line-height: 2rem; /* 32px */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  @apply font-Ubuntu ml-14;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #455d6d transparent;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+button:focus,
+input:focus,
+textarea:focus {
+  @apply outline-primary;
+}
+
+a:focus {
+  @apply outline-background;
+}
+
+.focused {
+  @apply bg-primary;
+}
