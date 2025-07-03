@@ -146,6 +146,62 @@ This document outlines the technologies used in the development of the **Retail 
 
 ---
 
+# 🛠️ Installation Instructions
+
+Follow these steps to clone and run the Retail Store App (built with Electron) from this Git repository:
+
+---
+
+## 📦 Prerequisites
+
+- [Git](https://git-scm.com/)
+- [Node.js (v14+)](https://nodejs.org/) and [npm](https://www.npmjs.com/)
+
+---
+
+## 🚀 Steps to Clone and Run
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/MAhmadS332/RetailStoreAppElectron.git
+   cd retail-store-app
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+---
+
+## 🧪 For Development
+
+- Live reloading (if configured):
+  ```bash
+  npm run dev
+  ```
+
+- Linting or formatting:
+  ```bash
+  npm run lint
+  ```
+
+---
+
+## 📦 Building for Production
+
+To generate platform-specific distributables:
+
+```bash
+npm run build:win      # if using windows
+npm run build:linux      # if using linux
+npm run build:mac      # if using mac
+```
+
+This will create setup executables in the `dist/` folder.
+
+---
+
 Built with ❤️ for efficient, small-scale retail management.
 
 © 2025 Retail Store App. All rights reserved.
