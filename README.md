@@ -127,4 +127,25 @@ The app features a **modern and intuitive UI**, as shown below:
 
 ---
 
+# 🧰 Tech Stack - Retail Store App
+
+This document outlines the technologies used in the development of the **Retail Store App**.
+
+---
+
+## ⚙️ Core Technologies
+
+| Layer          | Technology     | Purpose                                  |
+|----------------|----------------|------------------------------------------|
+| Frontend       | ReactJs  | User Interface and interaction           |
+| UI Framework   | Electron.js    | Cross-platform desktop app development   |
+| Styling        | Tailwind CSS     | Responsive and modern UI design          |
+| Backend        | NodeJs     | Business logic, billing, and data flow   |
+| Database       | SQLite         | Local storage for categories, items, orders, and settings |
+| Print Utility  | pdf-kit npm package | Receipt printing                         |
+
+---
+
+Built with ❤️ for efficient, small-scale retail management.
+
 © 2025 Retail Store App. All rights reserved.
