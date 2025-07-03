@@ -4,6 +4,8 @@
 
 The **Retail Store App** is a modern and user-friendly desktop application for managing sales, inventory, and customer records in a retail environment. The app is designed with a clean interface (see screenshot) and supports several core features to streamline retail operations.
 
+[Get the Windows Setup for Latest Release v1.0.0](https://github.com/MAhmadS332/RetailStoreAppElectron/releases/download/1.0.0/Retail.Store.App.Setup.1.0.0.exe) 
+
 ---
 
 ## Features
