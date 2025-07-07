@@ -12,7 +12,9 @@ The **Retail Store App** is a modern and user-friendly desktop application for m
 
 The app features a **modern and intuitive UI**, as shown below:
 
-![Retail Store App Video Demo](./retailstoreapp_demo.mp4)
+![UI Image](./appui.png)
+
+[Watch The Tutorial Video Here](https://youtu.be/eF3vHyE7dbY)
 
 ---
 
