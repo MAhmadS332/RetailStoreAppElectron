@@ -72,13 +72,13 @@ Customize the application with the **Settings Page**.
 
 Supported settings include:
 
-- **Store Name**, Initial Value: ```My Store```
-- **Currency Symbol**, Initial Value: ```Rs.```
-- **Store Address**, Initial Value: ```123 Main St, City, Country```
-- **Store Phone Number**, Initial Value: ```11111111111```
-- **Country Code**, Initial Value: ```92```
-- **Dark Mode Toggle**, Initial Value: ```false```
-- **UI Zoom Percentage**, Initial Value: ```100```
+- **Store Name**, ```Initial Value: My Store```
+- **Currency Symbol**, ```Initial Value: Rs.```
+- **Store Address**, ```Initial Value: 123 Main St, City, Country```
+- **Country Code**, ```Initial Value: 92```
+- **Store Phone Number**, ```Initial Value: 11111111111```
+- **Dark Mode Toggle**, ```Initial Value: false```
+- **UI Zoom Percentage**, ```Initial Value: 100```
 
 ---
 
@@ -110,11 +110,11 @@ When a bill is successfully processed, the **quantity of each item is automatica
 The main **Order Page** is where you sell and generate receipts.
 
 - Items listed with category filters
-- Add to order by clicking or scanning barcodes
+- Add items to order by clicking or scanning barcodes
 - Manually set a custom price for the receipt
-- Use `Ctrl` + click to add items in bulk (+10 qty)
+- Use `Ctrl` + click to increase/decrease item qty in bulk (+10 qty)
 - Apply discount and compute change automatically
-- "Proceed to Checkout" generates and prints the receipt
+- "Proceed to Checkout" generates and shows the receipt (where you can print it)
 
 ---
 
