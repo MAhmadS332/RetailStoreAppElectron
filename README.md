@@ -71,23 +71,14 @@ CREATE TABLE IF NOT EXISTS items (
 Customize the application with the **Settings Page**.
 
 Supported settings include:
-- Store Name
-- Currency Symbol
-- Store Address
-- Store Phone Number
-- Country Code
-- Dark Mode Toggle
-- UI Zoom Percentage
 
-```js
-if (!getByName('STORE_NAME')) { add('STORE_NAME', 'My Store') }
-if (!getByName('CURRENCY')) { add('CURRENCY', 'Rs.') }
-if (!getByName('STORE_ADDRESS')) { add('STORE_ADDRESS', '123 Main St, City, Country') }
-if (!getByName('STORE_PHONE')) { add('STORE_PHONE', '11111111111') }
-if (!getByName('COUNTRY_CODE')) { add('COUNTRY_CODE', '92') }
-if (!getByName('DARK_MODE')) { add('DARK_MODE', 'false') }
-if (!getByName('ZOOM')) { add('ZOOM', '100') }
-```
+- **Store Name**, Initial Value: ```My Store```
+- **Currency Symbol**, Initial Value: ```Rs.```
+- **Store Address**, Initial Value: ```123 Main St, City, Country```
+- **Store Phone Number**, Initial Value: ```11111111111```
+- **Country Code**, Initial Value: ```92```
+- **Dark Mode Toggle**, Initial Value: ```false```
+- **UI Zoom Percentage**, Initial Value: ```100```
 
 ---
 
