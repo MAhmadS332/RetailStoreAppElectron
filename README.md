@@ -8,6 +8,14 @@ The **Retail Store App** is a modern and user-friendly desktop application for m
 
 ---
 
+## 🖥️ User Interface
+
+The app features a **modern and intuitive UI**, as shown below:
+
+![Retail Store App Video Demo](./retailstoreapp_demo.mp4)
+
+---
+
 ## Features
 
 ### 🗂️ Category Management
@@ -110,14 +118,6 @@ The main **Order Page** is where you sell and generate receipts.
 - Use `Ctrl` + click to add items in bulk (+10 qty)
 - Apply discount and compute change automatically
 - "Proceed to Checkout" generates and prints the receipt
-
----
-
-## 🖥️ User Interface
-
-The app features a **modern and intuitive UI**, as shown below:
-
-![Retail Store App Video Demo](./retailstoreapp_demo.mp4)
 
 ---
 
