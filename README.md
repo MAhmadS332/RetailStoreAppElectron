@@ -14,6 +14,10 @@ The app features a **modern and intuitive UI**, as shown below:
 
 ![UI Image](./appui.png)
 
+---
+
+## 🎬 Video Tutorial
+
 [Watch The Tutorial Video Here](https://youtu.be/eF3vHyE7dbY)
 
 ---
