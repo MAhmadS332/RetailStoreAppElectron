@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('api', {
   setZoom: (zoomPercent) => {
     ipcRenderer.invoke('set-zoom', zoomPercent)
   },
+  notifyUpdateAvailable: async () => await ipcRenderer.invoke('notify-update-available'),
   getCurrentVersion: async () => await ipcRenderer.invoke('get-current-version'),
   cancelDownload: async () => await ipcRenderer.invoke('cancel-download'),
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),

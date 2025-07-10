@@ -32,12 +32,12 @@ function App() {
   useEffect(() => {
     const fontSize = settings[6].setting_value || '100'
     window.api.setZoom(fontSize)
+
     const checkForUpdates = async () => {
-      window.api.checkForUpdates()
-      // window.api.onUpdateAvailable((info) => {
-      //   console.log('Update available:', info)
-      //   setNewUpdateAvailable(true)
-      // })
+      const updateAvailable = await window.api.notifyUpdateAvailable()
+      if (updateAvailable && updateAvailable.isUpdateAvailable) {
+        setNewUpdateAvailable(true)
+      }
     }
     checkForUpdates()
   }, [])

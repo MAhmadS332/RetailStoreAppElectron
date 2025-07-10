@@ -1,6 +1,6 @@
 {
   "name": "retailstore",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Retail Store Management Application - Manage your store and shop with ease! This app lets you browse products, track orders, and handle inventory—all in one place.",
   "main": "./out/main/index.js",
   "author": "Muhammad Ahmad Saleem",
@@ -63,16 +63,16 @@
   },
   "build": {
     "appId": "com.retailstoreapp",
-    "productName": "Retail-Store-App",
+    "productName": "Retail Store App",
     "win": {
       "target": "nsis",
       "icon": "resources/assets/imgs/favicon.ico"
     },
     "nsis": {
       "oneClick": false,
-      "runAfterFinish": true,
       "perMachine": true,
       "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "license": "license.txt"

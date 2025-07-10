@@ -1,26 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import QuitAndInstallModal from '../components/updates-components/QuitAndInstallModal'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  setFirstTime,
+  setLoading,
+  setUpdateAvailable,
+  setCurrentVersion,
+  setAvailableVersion,
+  setDownloadProgress,
+  setDownloadSpeed,
+  setDownloading,
+  setUpdateStatus,
+  setLastChecked,
+  setEstimatedTimeRemaining,
+  setReleaseDate
+} from '../slices/updatesSlice'
 
 const Updates = () => {
-  const [loading, setLoading] = useState(false)
-  const [updateAvailable, setUpdateAvailable] = useState(false)
-  const [currentVersion, setCurrentVersion] = useState('')
-  const [availableVersion, setAvailableVersion] = useState(null)
-  const [downloadProgress, setDownloadProgress] = useState(0)
-  const [downloadSpeed, setDownloadSpeed] = useState('0 KB/s')
-  const [downloading, setDownloading] = useState(false)
-  const [updateStatus, setUpdateStatus] = useState('idle') // idle, checking, available, downloading, downloaded, error
-  const [lastChecked, setLastChecked] = useState(null)
-  const [changelog, setChangelog] = useState('')
-  const [estimatedTimeRemaining, setEstimatedTimeRemaining] = useState('')
+  const dispatch = useDispatch()
+  const firstTime = useSelector((state) => state.updates.value.firstTime)
+  const loading = useSelector((state) => state.updates.value.loading)
+  const updateAvailable = useSelector((state) => state.updates.value.updateAvailable)
+  const currentVersion = useSelector((state) => state.updates.value.currentVersion)
+  const availableVersion = useSelector((state) => state.updates.value.availableVersion)
+  const downloadProgress = useSelector((state) => state.updates.value.downloadProgress)
+  const downloadSpeed = useSelector((state) => state.updates.value.downloadSpeed)
+  const downloading = useSelector((state) => state.updates.value.downloading)
+  const updateStatus = useSelector((state) => state.updates.value.updateStatus)
+  const lastChecked = useSelector((state) => state.updates.value.lastChecked)
+  const estimatedTimeRemaining = useSelector((state) => state.updates.value.estimatedTimeRemaining)
+  const releaseDate = useSelector((state) => state.updates.value.releaseDate)
   const [quitAndInstallModal, setQuitAndInstallModal] = useState(false)
-  const [releaseDate, setReleaseDate] = useState('')
 
   useEffect(() => {
     // Check if update is already downloaded and waiting for install
     const fetchVersion = async () => {
       const currentVersion = await window.api.getCurrentVersion()
-      setCurrentVersion(currentVersion)
+      dispatch(setCurrentVersion(currentVersion))
     }
     fetchVersion()
 
@@ -30,37 +46,51 @@ const Updates = () => {
       console.log('Update status:', status)
       switch (status) {
         case 0: // no update available
-          setUpdateStatus('idle')
-          setUpdateAvailable(false)
-          setLoading(false)
+          dispatch(setUpdateStatus('idle'))
+          dispatch(setUpdateAvailable(false))
+          dispatch(setLoading(false))
           break
         case 1: // checking for update
-          setUpdateStatus('checking')
-          setLoading(true)
+          dispatch(setUpdateStatus('checking'))
+          dispatch(setLoading(true))
           break
         case 2: // update available
-          setUpdateStatus('available')
-          setLoading(false)
+          dispatch(setUpdateStatus('available'))
+          dispatch(setLoading(false))
           break
         case 3: // update downloaded
-          setUpdateStatus('downloaded')
-          setDownloading(false)
-          setDownloadProgress(100)
+          dispatch(setUpdateStatus('downloaded'))
+          dispatch(setDownloading(false))
+          dispatch(setDownloadProgress(100))
           break
         default:
           if (typeof status === 'string' && status.startsWith('Error:')) {
-            setUpdateStatus('error')
-            setLoading(false)
-            setDownloading(false)
+            dispatch(setUpdateStatus('error'))
+            dispatch(setLoading(false))
+            dispatch(setDownloading(false))
           }
       }
     }
 
+    const formatSpeed = (bytesPerSecond) => {
+      const kb = bytesPerSecond / 1024
+      const mb = kb / 1024
+      const gb = mb / 1024
+
+      if (gb >= 1) {
+        return `${gb.toFixed(2)} GB/s`
+      } else if (mb >= 1) {
+        return `${mb.toFixed(2)} MB/s`
+      } else {
+        return `${Math.round(kb)} KB/s`
+      }
+    }
+
     const handleDownloadProgress = (progress) => {
-      setDownloadProgress(progress.percent || 0)
+      dispatch(setDownloadProgress(progress.percent || 0))
       if (progress.bytesPerSecond) {
-        const speed = Math.round(progress.bytesPerSecond / 1024)
-        setDownloadSpeed(`${speed} KB/s`)
+        const formattedSpeed = formatSpeed(progress.bytesPerSecond)
+        dispatch(setDownloadSpeed(formattedSpeed))
       }
 
       if (progress.total && progress.transferred && progress.bytesPerSecond) {
@@ -70,26 +100,25 @@ const Updates = () => {
         const minutes = Math.floor(secondsRemaining / 60)
         const seconds = secondsRemaining % 60
 
-        setEstimatedTimeRemaining(`${minutes}m ${seconds}s`)
+        dispatch(setEstimatedTimeRemaining(`${minutes}m ${seconds}s`))
       }
     }
 
     const handleUpdateDownloaded = () => {
-      console.log('Update downloaded')
-      setDownloading(false)
-      setUpdateStatus('downloaded')
-      setDownloadProgress(100)
+      toast.success('Update Download Complete')
+      dispatch(setDownloading(false))
+      dispatch(setUpdateStatus('downloaded'))
+      dispatch(setDownloadProgress(100))
     }
 
     const handleUpdateAvailable = (info) => {
       console.log('Update available:', info)
-      setUpdateAvailable(true)
-      setAvailableVersion(info.version || 'v1.0.2') // Fallback version
-      setChangelog(info.releaseNotes || '')
-      setReleaseDate(new Date(info.releaseDate).toDateString() || 'Unknown release date')
-      setUpdateStatus('available')
-      setLoading(false)
-      setLastChecked(new Date())
+      dispatch(setUpdateAvailable(true))
+      dispatch(setAvailableVersion(info.version || 'v1.0.2')) // Fallback version
+      dispatch(setReleaseDate(new Date(info.releaseDate).toDateString() || 'Unknown release date'))
+      dispatch(setUpdateStatus('available'))
+      dispatch(setLoading(false))
+      dispatch(setLastChecked(new Date()))
     }
 
     // Add event listeners
@@ -98,40 +127,41 @@ const Updates = () => {
     window.api.onDownloadProgress(handleDownloadProgress)
     window.api.onUpdateDownloaded(handleUpdateDownloaded)
 
-    // Check for updates when component mounts
-    checkForUpdates()
+    if (firstTime) {
+      dispatch(setFirstTime(false)) // Reset first check state
+      checkForUpdates()
+    }
 
-    // Cleanup listeners on unmount
     return () => {
       // Note: You might need to implement removeListeners in your preload script
     }
   }, [])
 
   const checkForUpdates = async () => {
-    setLoading(true)
-    setUpdateStatus('checking')
-    setLastChecked(new Date())
+    dispatch(setLoading(true))
+    dispatch(setUpdateStatus('checking'))
+    dispatch(setLastChecked(new Date()))
 
     try {
       await window.api.checkForUpdates()
     } catch (error) {
       console.error('Update check failed:', error)
-      setUpdateStatus('error')
-      setLoading(false)
+      dispatch(setUpdateStatus('error'))
+      dispatch(setLoading(false))
     }
   }
 
   const downloadUpdate = async () => {
-    setDownloading(true)
-    setUpdateStatus('downloading')
-    setDownloadProgress(0)
+    dispatch(setDownloading(true))
+    dispatch(setUpdateStatus('downloading'))
+    dispatch(setDownloadProgress(0))
 
     try {
       await window.api.startDownload()
     } catch (error) {
       console.error('Download failed:', error)
-      setUpdateStatus('error')
-      setDownloading(false)
+      dispatch(setUpdateStatus('error'))
+      dispatch(setDownloading(false))
     }
   }
 
@@ -147,12 +177,12 @@ const Updates = () => {
     const success = await window.api.cancelDownload()
     if (success) {
       console.log('Download cancelled successfully')
-      setDownloading(false)
-      setUpdateStatus('available')
-      setLoading(false)
-      setDownloadProgress(0)
-      setEstimatedTimeRemaining('')
-      setDownloadSpeed('0 KB/s')
+      dispatch(setDownloading(false))
+      dispatch(setUpdateStatus('available'))
+      dispatch(setLoading(false))
+      dispatch(setDownloadProgress(0))
+      dispatch(setEstimatedTimeRemaining(''))
+      dispatch(setDownloadSpeed('0 KB/s'))
     }
   }
 

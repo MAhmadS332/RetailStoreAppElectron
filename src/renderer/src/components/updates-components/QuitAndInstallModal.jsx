@@ -40,7 +40,10 @@ const QuitAndInstallModal = ({ handleInstall, onClose }) => {
         <div>
           <h2 className="text-2xl font-bold mb-4">Quit and Install Update</h2>
           <form onSubmit={handleSubmit}>
-            <div className="mb-4">The application will now close to install the update. Any unsaved changes will be lost. Do you want to continue?</div>
+            <div className="mb-4">
+              The application will close to install the update and automatically restart with the new version. 
+              Any unsaved changes will be lost. Do you want to continue?
+            </div>
             <div className="flex justify-end gap-3">
               <button
                 type="button"

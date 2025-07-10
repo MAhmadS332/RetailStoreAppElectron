@@ -12,6 +12,7 @@ import settingsReducer from './slices/settingsSlice'
 import categoriesReducer from './slices/categoriesSlice'
 import currentOrderReducer from './slices/currentOrderSlice'
 import registerReducer from './slices/registerSlice'
+import updatesReducer from './slices/updatesSlice'
 
 const store = configureStore({
   reducer: {
@@ -19,7 +20,8 @@ const store = configureStore({
     settings: settingsReducer,
     categories: categoriesReducer,
     currentOrder: currentOrderReducer,
-    register: registerReducer
+    register: registerReducer,
+    updates: updatesReducer
   }
 })
 

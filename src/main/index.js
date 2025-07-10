@@ -9,6 +9,7 @@ const { autoUpdater, AppUpdater, CancellationToken } = require('electron-updater
 
 autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = false
+autoUpdater.autoRunAppAfterInstall = true 
 
 function createWindow() {
   // Create the browser window.
@@ -262,7 +263,10 @@ function createWindow() {
 
   //Auto Updater Checking
 
-  console.log(autoUpdater.currentVersion)
+  ipcMain.handle('notify-update-available', async () => {
+    return await autoUpdater.checkForUpdatesAndNotify()
+  })
+
   ipcMain.handle('check-for-updates', async () => {
     autoUpdater.checkForUpdates()
   })
