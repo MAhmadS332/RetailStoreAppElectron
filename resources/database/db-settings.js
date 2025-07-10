@@ -82,7 +82,7 @@ if (!getByName('STORE_PHONE')) {
   add('STORE_PHONE', '11111111111')
 }
 if (!getByName('COUNTRY_CODE')) {
-  add('COUNTRY_CODE', '+92')
+  add('COUNTRY_CODE', '92')
 }
 if (!getByName('DARK_MODE')) {
   add('DARK_MODE', 'false')

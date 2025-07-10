@@ -11,13 +11,16 @@ import SavedOrders from './pages/SavedOrders'
 import Register from './pages/Register'
 import Orders from './pages/Orders'
 import { useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
+import Updates from './pages/Updates'
+import NewUpdateModal from './components/updates-components/NewUpdateModal'
 
 //fix redux additions
 
 function App() {
   const settings = useSelector((state) => state.settings.value)
+  const [newUpdateAvailable, setNewUpdateAvailable] = useState(false)
 
   useEffect(() => {
     const darkTheme = settings[5].setting_value === 'true' ? true : false
@@ -29,7 +32,19 @@ function App() {
   useEffect(() => {
     const fontSize = settings[6].setting_value || '100'
     window.api.setZoom(fontSize)
+    const checkForUpdates = async () => {
+      window.api.checkForUpdates()
+      // window.api.onUpdateAvailable((info) => {
+      //   console.log('Update available:', info)
+      //   setNewUpdateAvailable(true)
+      // })
+    }
+    checkForUpdates()
   }, [])
+
+  const handleOnClose = () => {
+    setNewUpdateAvailable(false)
+  }
 
   return (
     <HashRouter>
@@ -61,6 +76,7 @@ function App() {
         }}
       />
       <Sidebar />
+      {newUpdateAvailable && <NewUpdateModal onClose={handleOnClose} />}
       <Routes>
         <Route exact path="/items" element={<Items />} />
         <Route exact path="/categories" element={<Categories />} />
@@ -69,6 +85,7 @@ function App() {
         <Route exact path="/saved-orders" element={<SavedOrders />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/" element={<Orders />} />
+        <Route exact path="/updates" element={<Updates />} />
         <Route exact path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

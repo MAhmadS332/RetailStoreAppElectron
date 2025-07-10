@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 
-const DeleteRegisterRecordModal = ({ previousData, onClose, deleteRecordItem }) => {
+const QuitAndInstallModal = ({ handleInstall, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
-    deleteRecordItem(previousData)
-    //   toast.error('Item is being used in a draft order')
-    // }
+    handleInstall()
     onClose()
   }
 
@@ -21,7 +19,7 @@ const DeleteRegisterRecordModal = ({ previousData, onClose, deleteRecordItem }) 
       onClick={onClose}
     >
       <div
-        className="bg-background text-text px-5 border-accent border-2 h-auto fixed rounded-lg shadow-gray-600 shadow-sm | top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 | flex flex-col items-center justify-center"
+        className="bg-background text-text px-5 border-accent border-2 h-auto fixed rounded-lg shadow-gray-600 shadow-sm | top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 | flex flex-col categorys-center justify-center"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -40,9 +38,9 @@ const DeleteRegisterRecordModal = ({ previousData, onClose, deleteRecordItem }) 
           </svg>
         </button>
         <div>
-          <h2 className="text-2xl font-bold mb-4">Delete Record</h2>
+          <h2 className="text-2xl font-bold mb-4">Quit and Install Update</h2>
           <form onSubmit={handleSubmit}>
-            <div className="mb-4">Do You Want To Delete This Record?</div>
+            <div className="mb-4">The application will now close to install the update. Any unsaved changes will be lost. Do you want to continue?</div>
             <div className="flex justify-end gap-3">
               <button
                 type="button"
@@ -66,4 +64,4 @@ const DeleteRegisterRecordModal = ({ previousData, onClose, deleteRecordItem }) 
   )
 }
 
-export default DeleteRegisterRecordModal
+export default QuitAndInstallModal

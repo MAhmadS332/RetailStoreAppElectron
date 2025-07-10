@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateSetting } from '../slices/settingsSlice'
 
 const Settings = () => {
   const dispach = useDispatch()
-  const VERSION = 'v1.0.0'
+  const [version, setVersion] = useState('') // Placeholder for version, can be updated dynamically
   const settings = useSelector((state) => state.settings.value)
 
   const [settingsChanged, setSettingsChanged] = useState(false)
@@ -75,12 +75,20 @@ const Settings = () => {
     }
   }
 
+  useEffect(() => {
+    const fetchVersion = async () => {
+      const currentVersion = await window.api.getCurrentVersion()
+      console.log('Current Version:', currentVersion)
+      setVersion(currentVersion)
+    }
+    fetchVersion()
+  }, [])
+
   return (
     <form onSubmit={handleSettingsSubmit}>
       <div className="text-2xl px-5 py-1.5 flex items-end sticky top-0 bg-primary text-header-text shadow-sm shadow-gray-400 border-b border-background">
-        
-        <span className='justify-self-center ml-auto'>Settings</span>
-        <span className='text-xs ml-auto justify-self-end'>{VERSION}</span>
+        <span className="justify-self-center ml-auto">Settings</span>
+        <span className="text-xs ml-auto justify-self-end">v{version}</span>
       </div>
 
       <div className="max-w-md mx-auto mt-6 p-4 bg-background rounded-md text-text">
@@ -119,7 +127,7 @@ const Settings = () => {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-text">
-            Phone <i className="text-xs">(e.g. +92 1111111111)</i>
+            Phone <i className="text-xs">(e.g. 92 1111111111)</i>
           </label>
           <div className="flex space-x-2">
             <input

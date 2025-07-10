@@ -1,0 +1,9 @@
+End User License Agreement (EULA)
+
+This software is provided "as is" without warranty of any kind.
+By installing or using this application, you agree to the terms of this license.
+
+You may use this software for personal or commercial purposes.
+You may not reverse engineer, modify, or redistribute it without permission.
+
+Copyright © 2025

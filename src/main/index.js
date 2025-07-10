@@ -5,6 +5,10 @@ import path, { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 const dbMgr = require('../../resources/database/db-manager')
 import icon from '../../resources/assets/imgs/favicon.ico?asset'
+const { autoUpdater, AppUpdater, CancellationToken } = require('electron-updater')
+
+autoUpdater.autoDownload = false
+autoUpdater.autoInstallOnAppQuit = false
 
 function createWindow() {
   // Create the browser window.
@@ -37,10 +41,8 @@ function createWindow() {
 
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-    console.log('DEV Dir Name: ', __dirname)
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-    console.log('Dir Name: ', join(__dirname, '../renderer/index.html'))
   }
 
   if (!is.dev) {
@@ -57,10 +59,10 @@ function createWindow() {
   mainWindow.center()
 
   //HANDLERS
+
   ipcMain.handle('open-receipts-folder', async () => {
     const dirPath = path.join(process.env.APPDATA, '.retailstoreapp')
     const receiptPath = path.join(dirPath, 'receipts')
-    console.log(receiptPath)
     if (!fs.existsSync(receiptPath)) {
       fs.mkdirSync(receiptPath)
       console.log('Receipt Path Dir Created')
@@ -87,8 +89,6 @@ function createWindow() {
   }
 
   ipcMain.handle('generate-pdf', async (event, settings, order) => {
-    console.log(settings, order)
-
     const storeName = settings[0].setting_value
     const currency = settings[1].setting_value
     const storeAddress = settings[2].setting_value
@@ -139,7 +139,7 @@ function createWindow() {
       .font('Arial')
       .fontSize(12)
       .text(storeAddress, { align: 'center' })
-      .text(`${countryCode} ${storePhone}`, { align: 'center' })
+      .text(`+${countryCode} ${storePhone}`, { align: 'center' })
       .moveDown()
     doc.fontSize(12).text(`Date: ${date}`, { align: 'center' }).moveDown()
 
@@ -242,6 +242,7 @@ function createWindow() {
 
     return filePath
   })
+
   ipcMain.handle('print-pdf', async (event, path) => {
     const win = new BrowserWindow({
       parent: mainWindow,
@@ -258,6 +259,82 @@ function createWindow() {
       //win.webContents.print({silent: true})
     })
   })
+
+  //Auto Updater Checking
+
+  console.log(autoUpdater.currentVersion)
+  ipcMain.handle('check-for-updates', async () => {
+    autoUpdater.checkForUpdates()
+  })
+
+  let cancellationToken = null
+
+  ipcMain.handle('start-download', () => {
+    cancellationToken = new CancellationToken()
+
+    autoUpdater
+      .downloadUpdate(cancellationToken)
+      .then(() => {
+        console.log('Download completed.')
+        cancellationToken = null
+      })
+      .catch((err) => {
+        if (cancellationToken && cancellationToken.cancelled) {
+          console.log('Download was cancelled.')
+        } else {
+          console.error('Download error:', err)
+        }
+        cancellationToken = null
+      })
+
+    console.log('Download started...')
+  })
+
+  ipcMain.handle('cancel-download', () => {
+    if (cancellationToken) {
+      cancellationToken.cancel()
+      cancellationToken = null
+      return true
+    }
+    return false
+  })
+
+  ipcMain.handle('install-update', () => {
+    autoUpdater.quitAndInstall()
+  })
+
+  //STATUSES: Checking(1), Available(2), Not Available(0), Downloaded(3)
+
+  // Status events
+  autoUpdater.on('checking-for-update', () => {
+    mainWindow.webContents.send('update-status', 1)
+  })
+
+  autoUpdater.on('update-available', (info) => {
+    mainWindow.webContents.send('update-available', info)
+    mainWindow.webContents.send('update-status', 2)
+  })
+
+  autoUpdater.on('update-not-available', () => {
+    mainWindow.webContents.send('update-status', 0)
+  })
+  autoUpdater.on('error', (err) => {
+    mainWindow.webContents.send('update-status', `Error: ${err.message}`)
+  })
+
+  autoUpdater.on('download-progress', (progress) => {
+    mainWindow.webContents.send('download-progress', progress)
+  })
+
+  autoUpdater.on('update-downloaded', () => {
+    mainWindow.webContents.send('update-downloaded')
+    mainWindow.webContents.send('update-status', 3)
+  })
+  ipcMain.handle('get-current-version', async () => {
+    return app.getVersion()
+  })
+
+  ipcMain.handle('check-downloaded-update', async () => {})
 }
 
 process.on('uncaughtException', (err) => {
@@ -271,15 +348,12 @@ app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  //Check For Updates
+  autoUpdater.checkForUpdates()
 
   createWindow()
 
