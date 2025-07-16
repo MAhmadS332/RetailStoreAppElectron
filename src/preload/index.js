@@ -28,5 +28,8 @@ contextBridge.exposeInMainWorld('api', {
   onUpdateStatus: (cb) => ipcRenderer.on('update-status', (_, code) => cb(code)),
   onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_, info) => cb(info)),
   onUpdateDownloaded: (cb) => ipcRenderer.on('update-downloaded', cb),
-  onDownloadProgress: (cb) => ipcRenderer.on('download-progress', (_, percent) => cb(percent))
+  onDownloadProgress: (cb) => ipcRenderer.on('download-progress', (_, percent) => cb(percent)),
+
+  importFromCsv: async () => await ipcRenderer.invoke('load-csv'),
+  exportToCsv: async (jsonArray) => await ipcRenderer.invoke('dump-json-to-csv', jsonArray)
 })

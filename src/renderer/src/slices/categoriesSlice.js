@@ -11,6 +11,9 @@ const categoriesSlice = createSlice({
   initialState,
 
   reducers: {
+    reloadCategories: (state) => {
+      state.value = dbMgr.categories.getAll()
+    },
     addCategory: (state, action) => {
       const name = action.payload
       const errorMsg = dbMgr.categories.add(name)
@@ -55,5 +58,6 @@ const categoriesSlice = createSlice({
   }
 })
 
-export const { addCategory, editCategory, deleteCategory } = categoriesSlice.actions
+export const { reloadCategories, addCategory, editCategory, deleteCategory } =
+  categoriesSlice.actions
 export default categoriesSlice.reducer

@@ -9,7 +9,7 @@ const { autoUpdater, AppUpdater, CancellationToken } = require('electron-updater
 
 autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = false
-autoUpdater.autoRunAppAfterInstall = true 
+autoUpdater.autoRunAppAfterInstall = true
 
 function createWindow() {
   // Create the browser window.
@@ -60,7 +60,100 @@ function createWindow() {
   mainWindow.center()
 
   //HANDLERS
+  function jsonToCsv(jsonArray) {
+    if (!Array.isArray(jsonArray) || jsonArray.length === 0) {
+      jsonArray = [
+        {
+          item_name: '',
+          item_qty: '',
+          item_price: '',
+          item_barcode: '',
+          category_name: ''
+        }
+      ]
+    }
 
+    const headers = Object.keys(jsonArray[0])
+    const csvRows = [
+      headers.join(','), // header row
+      ...jsonArray.map((obj) => headers.map((h) => JSON.stringify(obj[h] ?? '')).join(',')) // data rows
+    ]
+
+    return csvRows.join('\n')
+  }
+
+  // IPC handler
+  function csvToJson(csv) {
+    const [headerLine, ...lines] = csv.split('\n').filter(Boolean)
+    const headers = headerLine.split(',').map((h) => h.trim())
+
+    return lines.map((line) => {
+      const values = line.split(',').map((v) => v.trim().replace(/^"|"$/g, ''))
+      const obj = {}
+      headers.forEach((header, index) => {
+        obj[header] = values[index]
+      })
+      return obj
+    })
+  }
+
+  // IPC handler to load and parse CSV
+  ipcMain.handle('load-csv', async () => {
+    try {
+      const { canceled, filePaths } = await dialog.showOpenDialog({
+        title: 'Select a CSV file',
+        filters: [{ name: 'CSV Files', extensions: ['csv'] }],
+        properties: ['openFile']
+      })
+
+      if (canceled || !filePaths[0]) return { success: false, data: null }
+
+      const filePath = filePaths[0]
+      const csvContent = fs.readFileSync(filePath, 'utf-8')
+      const jsonData = csvToJson(csvContent)
+
+      return { success: true, data: jsonData }
+    } catch (err) {
+      return { success: false, error: err.message }
+    }
+  })
+  ipcMain.handle('dump-json-to-csv', async (event, jsonArray) => {
+    try {
+      console.log('Exporting to CSV:', jsonArray)
+      const csv = jsonToCsv(jsonArray)
+
+      const dirPath = path.join(process.env.APPDATA, '.retailstoreapp')
+      const csvPath = path.join(dirPath, 'csv')
+      if (!fs.existsSync(csvPath)) {
+        fs.mkdirSync(csvPath)
+        console.log('CSV Path Dir Created')
+      }
+
+      const newDate = new Date()
+      const date = newDate
+        .toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        })
+        .replace(/ /g, '-') // 06-Jun-2025
+
+      const time = newDate
+        .toTimeString()
+        .split(' ')[0]
+        .replace(/:/g, 'h')
+        .replace(/h(\d+)$/, 'm$1s')
+
+      const filePath = path.join(csvPath, `items_dump-${date}-${time}.csv`)
+
+      fs.writeFileSync(filePath, csv, 'utf-8')
+      shell.showItemInFolder(filePath)
+
+      return 1
+    } catch (err) {
+      return 0
+    }
+  })
   ipcMain.handle('open-receipts-folder', async () => {
     const dirPath = path.join(process.env.APPDATA, '.retailstoreapp')
     const receiptPath = path.join(dirPath, 'receipts')

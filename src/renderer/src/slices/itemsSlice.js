@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import toast from 'react-hot-toast'
-const dbMgr = window.api.dbMgr
 
+const dbMgr = window.api.dbMgr
 const initialState = {
   value: dbMgr.items.getAll() || []
 }
@@ -23,6 +23,7 @@ const itemsSlice = createSlice({
         toast.error('Failed to add item!')
       }
     },
+
     editItem: (state, action) => {
       const { id, name, qty, price, barcode, categoryId } = action.payload
       const errorMsg = dbMgr.items.edit(id, name, qty, price, barcode, categoryId)
