@@ -6,10 +6,8 @@ The **Retail Store App** is a modern and user-friendly desktop application for m
 
 ---
 
-<<<<<<< HEAD
 ## Features
 
-=======
 ## 🖥️ User Interface
 
 The app features a **modern and intuitive UI**, as shown below:
@@ -18,15 +16,6 @@ The app features a **modern and intuitive UI**, as shown below:
 
 ---
 
-## 🎬 Video Tutorial
-
-[Watch The Tutorial Video Here](https://youtu.be/eF3vHyE7dbY)
-
----
-
-## Features
-
->>>>>>> 8e80f5615d0db4c39f186fbe1851dff391a65412
 ### 🗂️ Category Management
 
 Manage product categories easily through the **Categories Page**.
@@ -66,7 +55,6 @@ CREATE TABLE IF NOT EXISTS items (
 - Add new inventory items
 - Assign items to categories
 - Input price, quantity, and optional barcode
-<<<<<<< HEAD
 
 ---
 
@@ -128,14 +116,6 @@ The main **Order Page** is where you sell and generate receipts.
 - Use `Ctrl` + click to add items in bulk (+10 qty)
 - Apply discount and compute change automatically
 - "Proceed to Checkout" generates and prints the receipt
-
----
-
-## 🖥️ User Interface
-
-The app features a **modern and intuitive UI**, as shown below:
-
-![Retail Store App Video Demo](./retailstoreapp_demo.mp4)
 
 ---
 
@@ -290,4 +270,3 @@ This will create setup executables in the `dist/` folder.
 Built with ❤️ for efficient, small-scale retail management.
 
 © 2025 Retail Store App. All rights reserved.
->>>>>>> 8e80f5615d0db4c39f186fbe1851dff391a65412
