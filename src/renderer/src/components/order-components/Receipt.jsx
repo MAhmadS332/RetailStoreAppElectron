@@ -38,7 +38,7 @@ const Receipt = ({ receiptItemsFunctions }) => {
   }
 
   return (
-    <div className="m-3 grid text-text bg-background grid-rows-[0.1fr_0.71fr_0.28fr_0.01fr] border-l-2 border-accent">
+    <div className="m-3 grid select-none text-text bg-background grid-rows-[0.1fr_0.71fr_0.28fr_0.01fr] border-l-2 border-accent overflow-hidden">
       <ReceiptHeader orderDate={order.date} />
       <ReceiptItems receiptItemsFunctions={receiptItemsFunctions} />
       <ReceiptTotal />

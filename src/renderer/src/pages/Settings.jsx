@@ -85,9 +85,9 @@ const Settings = () => {
   }, [])
 
   return (
-    <form onSubmit={handleSettingsSubmit}>
+    <form onSubmit={handleSettingsSubmit} className=" select-none">
       <div className="text-2xl px-5 py-1.5 flex items-end sticky top-0 bg-primary text-header-text shadow-sm shadow-gray-400 border-b border-background">
-        <span className="justify-self-center ml-auto">Settings</span>
+        <span className="justify-self-center ml-auto  select-none">Settings</span>
         <span className="text-xs ml-auto justify-self-end">v{version}</span>
       </div>
 
@@ -189,14 +189,15 @@ const Settings = () => {
         <div className="mb-4 flex flex-col gap-1">
           Additional Settings
           <div className="ml-2">
-            <label className="inline-flex items-center">
+            <label class="inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                className="form-checkbox h-5 w-5 text-primary"
                 checked={darkMode === 'true' ? true : false}
                 onChange={handleDarkModeChange}
+                class="sr-only peer"
               />
-              <span className="ml-2 text-sm text-text">Enable Dark Mode</span>
+              <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-1 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+              <span class="ms-3 ml-2 text-sm text-text">Enable Dark Mode</span>
             </label>
           </div>
         </div>

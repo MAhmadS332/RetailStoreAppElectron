@@ -18,7 +18,7 @@ const CategoryCardList = ({ setEditingCategory }) => {
           onClose={() => setDeleteModal(false)}
         />
       )}
-      <div className="text-2xl sticky top-0 px-5 py-1.5 bg-primary text-header-text text-center shadow-sm shadow-gray-400 border-b border-background">
+      <div className=" select-none text-2xl sticky top-0 px-5 py-1.5 bg-primary text-header-text text-center shadow-sm shadow-gray-400 border-b border-background">
         Categories
       </div>
       <div className="flex flex-wrap gap-2 p-5 overflow-hidden pb-[8.25rem] ">

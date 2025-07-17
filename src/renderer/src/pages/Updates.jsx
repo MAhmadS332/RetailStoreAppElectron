@@ -191,7 +191,7 @@ const Updates = () => {
   }
 
   return (
-    <div className="h-full bg-background text-text">
+    <div className="h-full bg-background text-text  select-none">
       <div className="text-2xl px-5 py-1.5 flex items-center justify-center sticky top-0 bg-primary text-header-text shadow-sm shadow-gray-400 border-b border-background">
         Updates
       </div>

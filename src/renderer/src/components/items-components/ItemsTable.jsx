@@ -4,7 +4,7 @@ import EditItemModal from './EditItemModal'
 import DeleteItemModal from './DeleteItemModal'
 import { useSelector } from 'react-redux'
 
-const ItemsTable = () => {
+const ItemsTable = ({ showLowStock = true }) => {
   const items = useSelector((state) => state.items.value)
   const [addModal, setAddModal] = useState(false)
   const [editModal, setEditModal] = useState(false)
@@ -64,7 +64,7 @@ const ItemsTable = () => {
         </button>
 
         <table className="w-full bg-background text-text overflow-y-auto overflow-x-hidden">
-          <thead className="sticky top-0 z-10">
+          <thead className="sticky top-0 z-10  select-none">
             <tr className="bg-primary text-header-text text-sm md:text-base lg:text-lg font-bUbuntu">
               <th className="py-[0.65rem] px-3">Sr#</th>
               <th className="py-[0.65rem] px-3">Item Name</th>
@@ -81,7 +81,7 @@ const ItemsTable = () => {
               items.map((item, index) => (
                 <tr
                   key={item.item_id}
-                  className={`border-2 border-accent hover:bg-accent ${item.item_qty === 0 ? 'text-highlight' : ''}`}
+                  className={`border-2 border-accent hover:bg-accent ${item.item_qty === 0 && showLowStock ? 'text-highlight' : ''}`}
                 >
                   <td className="py-2 px-3 text-center">{index + 1}</td>
                   <td className="py-2 px-3 text-center">{item.item_name}</td>

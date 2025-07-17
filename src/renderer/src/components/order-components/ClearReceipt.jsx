@@ -48,7 +48,7 @@ const ClearReceipt = ({ onClose }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="my-4 px-4 py-2 text-lg font-bold bg-background border-2 border-accent text-header-text rounded hover:text-xl transition-all"
+                className="my-4 px-4 py-2 text-lg font-bold bg-background border-2 border-accent text-text rounded hover:text-xl transition-all"
               >
                 No
               </button>

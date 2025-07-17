@@ -47,7 +47,7 @@ const Register = () => {
 
   return (
     <div>
-      <div className="text-2xl px-5 py-1.5 sticky top-0 text-center bg-primary text-header-text shadow-sm shadow-gray-400 border-b border-background">
+      <div className=" select-none text-2xl px-5 py-1.5 sticky top-0 text-center bg-primary text-header-text shadow-sm shadow-gray-400 border-b border-background">
         Register
       </div>
 
