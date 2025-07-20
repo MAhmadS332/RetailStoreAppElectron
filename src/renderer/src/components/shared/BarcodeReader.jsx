@@ -32,7 +32,7 @@ const BarcodeReader = ({ addItemToReceipt }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-t-2 border-accent items-center gap-1 flex justify-end py-2"
+      className="border-t-2 border-accent items-center gap-1 flex justify-end p-2"
     >
       <i
         className="justify-self-start mr-auto"

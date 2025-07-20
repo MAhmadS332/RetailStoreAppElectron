@@ -3,6 +3,8 @@ import AddItemModal from './AddItemModal'
 import EditItemModal from './EditItemModal'
 import DeleteItemModal from './DeleteItemModal'
 import { useSelector } from 'react-redux'
+import DeleteSelectedItemModal from './DeleteSelectedItemModal'
+import { s } from 'framer-motion/client'
 
 const ItemsTable = ({ showLowStock = true }) => {
   const items = useSelector((state) => state.items.value)
@@ -11,6 +13,24 @@ const ItemsTable = ({ showLowStock = true }) => {
   const [editModalData, setEditModalData] = useState({})
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteModalData, setDeleteModalData] = useState(-1)
+  const [selectedItems, setSelectedItems] = useState([])
+
+  const handleSelectItem = (e, itemIds) => {
+    if (e.target.checked) {
+      console.log('Selected Items:', [...selectedItems, ...itemIds])
+      setSelectedItems([...selectedItems, ...itemIds])
+    } else {
+      //remove the itemIds from selectedItems
+      setSelectedItems(selectedItems.filter((id) => !itemIds.includes(id)))
+      console.log(
+        'Selected Items:',
+        selectedItems.filter((id) => !itemIds.includes(id))
+      )
+    }
+  }
+  const handleDeleteSelected = () => {
+    setDeleteModal(true)
+  }
 
   const handleAdd = () => {
     setAddModal(true)
@@ -36,7 +56,16 @@ const ItemsTable = ({ showLowStock = true }) => {
           }}
         />
       )}
-      {deleteModal && (
+      {deleteModal && selectedItems.length > 0 && (
+        <DeleteSelectedItemModal
+          deleteSelectedItems={selectedItems}
+          onClose={() => {
+            setDeleteModal(false)
+            setSelectedItems([])
+          }}
+        />
+      )}
+      {deleteModal && selectedItems.length == 0 && (
         <DeleteItemModal
           itemId={deleteModalData}
           onClose={() => {
@@ -66,13 +95,39 @@ const ItemsTable = ({ showLowStock = true }) => {
         <table className="w-full bg-background text-text overflow-y-auto overflow-x-hidden">
           <thead className="sticky top-0 z-10  select-none">
             <tr className="bg-primary text-header-text text-sm md:text-base lg:text-lg font-bUbuntu">
+              <th className="py-[0.65rem] px-3">
+                <input
+                  type="checkbox"
+                  className="bg-white h-4 w-4"
+                  checked={selectedItems.length == items.length && items.length > 0}
+                  onChange={(e) => {
+                    const allItemsIds = items.map((item) => item.item_id)
+                    handleSelectItem(e, allItemsIds)
+                  }}
+                />
+              </th>
               <th className="py-[0.65rem] px-3">Sr#</th>
               <th className="py-[0.65rem] px-3">Item Name</th>
               <th className="py-[0.65rem] px-3">Item Qty</th>
               <th className="py-[0.65rem] px-3">Item Rate</th>
               <th className="py-[0.65rem] px-3">Barcode</th>
               <th className="py-[0.65rem] px-3">Category</th>
-              <th className="py-[0.65rem] px-3">Actions</th>
+              <th
+                className={""}
+              >
+                {selectedItems.length == 0 ? (
+                  <span className='py-[0.65rem] px-3'>Actions</span>
+                ) : (
+                  <button
+                    onClick={() => {
+                      handleDeleteSelected(selectedItems)
+                    }}
+                    className="py-[0.5rem] px-3 text-white rounded box-border w-full text-center bg-red-500 hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -83,6 +138,14 @@ const ItemsTable = ({ showLowStock = true }) => {
                   key={item.item_id}
                   className={`border-2 border-accent hover:bg-accent ${item.item_qty === 0 && showLowStock ? 'text-highlight' : ''}`}
                 >
+                  <td className="py-2 px-3 text-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.includes(item.item_id)}
+                      className="bg-white h-4 w-4"
+                      onChange={(e) => handleSelectItem(e, [item.item_id])}
+                    />
+                  </td>
                   <td className="py-2 px-3 text-center">{index + 1}</td>
                   <td className="py-2 px-3 text-center">{item.item_name}</td>
                   <td className="py-2 px-3 text-center">{item.item_qty}</td>
