@@ -1,8 +1,8 @@
-# Retail Store App Documentation
+# RetailPro Documentation
 
 ## Overview
 
-The **Retail Store App** is a modern and user-friendly desktop application for managing sales, inventory, and customer records in a retail environment. The app is designed with a clean interface (see screenshot) and supports several core features to streamline retail operations.
+The **RetailPro** is a modern and user-friendly desktop application for managing sales, inventory, and customer records in a retail environment. The app is designed with a clean interface (see screenshot) and supports several core features to streamline retail operations.
 
 ---
 
